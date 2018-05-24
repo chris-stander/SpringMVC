@@ -21,6 +21,10 @@ public class RootApplicationContextConfig {
          .setType(EmbeddedDatabaseType.HSQL)
          .addScript("db/sql/create-table.sql")
          .addScript("db/sql/insert-data.sql")
+         
+         // add new scripts
+         .addScript("db/sql/create-customer-table.sql")
+         .addScript("db/sql/insert-customer-data.sql")
          .build();
       return db;
    }
