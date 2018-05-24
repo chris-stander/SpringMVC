@@ -129,6 +129,8 @@ public class ProductController {
 		}
 
 		MultipartFile productImage = newProduct.getProductImage();
+		// add productpdf
+		MultipartFile productPdf = newProduct.getProductPdf();
 		String rootDirectory = request.getSession().getServletContext().getRealPath("/");
 
 		if (productImage != null && !productImage.isEmpty()) {
@@ -139,7 +141,18 @@ public class ProductController {
 				throw new RuntimeException("Product Image saving failed", e);
 			}
 		}
+		
+		
+		if (productPdf != null && !productPdf.isEmpty()) {
+			try {
+				productPdf
+						.transferTo(new File(rootDirectory + "resources\\pdf\\" + newProduct.getProductId() + ".pdf"));
+			} catch (Exception e) {
+				throw new RuntimeException("Product User Manual saving failed", e);
+			}
+		}
 
+		
 		productService.addProduct(newProduct);
 		return "redirect:/market/products";
 	}
