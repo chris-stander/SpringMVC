@@ -1,34 +1,31 @@
 package com.packt.webstore.domain;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class CustomerHero implements Serializable {
-	
-	//
-	//
-	
-private static final long serialVersionUID = 519120743943282354L;
-	
+
+	private static final long serialVersionUID = 519120743943282354L;
+
 	private String customerId;
 	private String name;
 	private String address;
 	private Long noOfOrdersMade;
-	
-	public CustomerHero() {}
-	
+
+	public CustomerHero() {
+	}
+
 	public CustomerHero(String name, String address) {
 		this.name = name;
 		this.address = address;
 	}
-	
-	// Getters/Setters
 
+	// Getters/Setters
 
 	public String getName() {
 		return name;
 	}
-
-	
 
 	public String getCustomerId() {
 		return customerId;
@@ -60,10 +57,8 @@ private static final long serialVersionUID = 519120743943282354L;
 
 	@Override
 	public String toString() {
-		return "CustomerHero [customerId=" + customerId + ", name=" + name + ", address=" + address + ", noOfOrdersMade="
-				+ noOfOrdersMade + "]";
+		return "CustomerHero [customerId=" + customerId + ", name=" + name + ", address=" + address
+				+ ", noOfOrdersMade=" + noOfOrdersMade + "]";
 	}
-	
 
 }
-

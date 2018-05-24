@@ -21,16 +21,16 @@ public class Product implements Serializable {
 
 	private static final long serialVersionUID = 3678107792576131001L;
 
-	@Pattern(regexp="P[1-9]+", message="{Pattern.Product.productId.validation}")
-	@ProductId 
+	@Pattern(regexp = "P[1-9]+", message = "{Pattern.Product.productId.validation}")
+	@ProductId
 	private String productId;
-	
-	@Size(min=4, max=50, message="{Size.Product.name.validation}")
+
+	@Size(min = 4, max = 50, message = "{Size.Product.name.validation}")
 	private String name;
-	
-	@Min(value=0, message="{Min.Product.unitPrice.validation}")
-	@Digits(integer=8, fraction=2, message="{Digits.Product.unitPrice.validation}")
-	@NotNull(message= "{NotNull.Product.unitPrice.validation}")
+
+	@Min(value = 0, message = "{Min.Product.unitPrice.validation}")
+	@Digits(integer = 8, fraction = 2, message = "{Digits.Product.unitPrice.validation}")
+	@NotNull(message = "{NotNull.Product.unitPrice.validation}")
 	private BigDecimal unitPrice;
 	private String description;
 	private String manufacturer;
@@ -41,6 +41,7 @@ public class Product implements Serializable {
 	private String condition;
 	@JsonIgnore
 	private MultipartFile productImage;
+	private MultipartFile productPdf;
 
 	public Product() {
 		super();
@@ -139,6 +140,15 @@ public class Product implements Serializable {
 
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
+	}
+
+	@XmlTransient
+	public MultipartFile getProductPdf() {
+		return productPdf;
+	}
+
+	public void setProductPdf(MultipartFile productPdf) {
+		this.productPdf = productPdf;
 	}
 
 	@Override
