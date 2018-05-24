@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -39,6 +42,47 @@ public class ProductController {
 	
 	@Autowired
 	private ProductValidator productValidator;
+	
+	// HeroChallenge
+	
+	@RequestMapping("/products/{category}/{price}")
+		public String filterProducts(@PathVariable("category") String category,
+		                             @MatrixVariable(pathVar = "price") Map<String, List<String>> filterParams,
+		                             @RequestParam("manufacturer") String manufacturer,
+		                             Model model) {
+		    Set<Product> filteredProducts = new HashSet<Product>();
+	
+		    List<Product> productsByCategory = productService.getProductsByCategory(category);
+		    List<Product> productsByManufacturer = productService.getProductsByManufacturer(manufacturer);
+		    List<Product> productsByPrice = productService.getProductsByFilter(filterParams);
+	
+		  
+		    
+	
+		    for(Product categoryProduct: productsByCategory) {
+		        for(Product manufacturerProduct: productsByManufacturer) {
+		            for(Product priceProduct: productsByPrice) {
+		                if(priceProduct.equals(manufacturerProduct) && manufacturerProduct.equals(categoryProduct)) {
+		                    filteredProducts.add(priceProduct);
+		                }
+		            }
+		        }
+		    }
+	
+		    model.addAttribute("products", filteredProducts);
+	
+		    return "products";
+	}
+	
+/*	
+	@RequestMapping("/products/filter/{price}")
+		public String getProductsByFilter(@MatrixVariable(pathVar="price")Map<String, List<String>> filterParams, Model model) {
+			model.addAttribute("products", productService.getProductsByFilter(filterParams));
+			return "products";
+		}
+*/	
+	
+	
 
 	@RequestMapping("/products")
 	public String list(Model model) {
