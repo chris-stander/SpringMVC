@@ -22,6 +22,8 @@ public class CartRestController {
    @Autowired
    private CartService cartService;
    
+   // can alternatively type @PostMapping instead of @RequestMapping(method = RequestMethod.POST)
+   
    @RequestMapping(method = RequestMethod.POST)
    @ResponseStatus(value = HttpStatus.CREATED)
    public void create(@RequestBody CartDto cartDto) {

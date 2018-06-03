@@ -2,7 +2,6 @@ package com.packt.webstore.domain.repository;
 
 import java.util.List;
 import java.util.Map;
-import java.math.BigDecimal;
 
 import com.packt.webstore.domain.Product;
 
@@ -18,10 +17,6 @@ public interface ProductRepository {
 	
 	Product getProductById(String productID);
 	
-	// hero 3
-	List<Product> filterProducts(Map<String,List<String>> filterParams);
-		List<Product> getProductsByManufacturer(String manufacturer);
-		List<Product> getProductsByPrice(BigDecimal low, BigDecimal high);
-	
-	void addProduct(Product product);
+        List<Product> getProductsByCategoryAndPriceFilter(Map<String, List<String>> filterParams, String category);
+        	void addProduct(Product product);
 }

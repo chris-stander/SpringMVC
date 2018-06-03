@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.packt.webstore.validator.CategoryValidate;
 import com.packt.webstore.validator.ProductId;
 
 @XmlRootElement
@@ -21,27 +22,40 @@ public class Product implements Serializable {
 
 	private static final long serialVersionUID = 3678107792576131001L;
 
-	@Pattern(regexp = "P[1-9]+", message = "{Pattern.Product.productId.validation}")
-	@ProductId
+	@Pattern(regexp="P[1-9]+", message="{Pattern.Product.productId.validation}")
+	@ProductId 
 	private String productId;
-
-	@Size(min = 4, max = 50, message = "{Size.Product.name.validation}")
+	
+	@Size(min=4, max=50, message="{Size.Product.name.validation}")
 	private String name;
-
-	@Min(value = 0, message = "{Min.Product.unitPrice.validation}")
-	@Digits(integer = 8, fraction = 2, message = "{Digits.Product.unitPrice.validation}")
-	@NotNull(message = "{NotNull.Product.unitPrice.validation}")
+	
+	@Min(value=0, message="{Min.Product.unitPrice.validation}")
+	@Digits(integer=8, fraction=2, message="{Digits.Product.unitPrice.validation}")
+	@NotNull(message= "{NotNull.Product.notNull.validation}")
 	private BigDecimal unitPrice;
 	private String description;
+        @NotNull(message = "{NotNull.Product.notNull.validation}")
 	private String manufacturer;
+        @NotNull(message = "{NotNull.Product.notNull.validation}")
+        @CategoryValidate
 	private String category;
+        @Min(value = 0, message = "{Min.Product.inStock.validation}")
 	private long unitsInStock;
 	private long unitsInOrder;
 	private boolean discontinued;
 	private String condition;
 	@JsonIgnore
 	private MultipartFile productImage;
-	private MultipartFile productPdf;
+        @JsonIgnore
+        private MultipartFile productManual;
+
+    public MultipartFile getProductManual() {
+        return productManual;
+    }
+
+    public void setProductManual(MultipartFile productManual) {
+        this.productManual = productManual;
+    }
 
 	public Product() {
 		super();
@@ -140,15 +154,6 @@ public class Product implements Serializable {
 
 	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
-	}
-
-	@XmlTransient
-	public MultipartFile getProductPdf() {
-		return productPdf;
-	}
-
-	public void setProductPdf(MultipartFile productPdf) {
-		this.productPdf = productPdf;
 	}
 
 	@Override

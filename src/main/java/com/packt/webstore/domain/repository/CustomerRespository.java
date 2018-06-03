@@ -1,11 +1,10 @@
 package com.packt.webstore.domain.repository;
 
+import com.packt.webstore.domain.Customer;
 import java.util.List;
 
-import com.packt.webstore.domain.CustomerHero;
-
-public interface CustomerRepository {
-
-	List<CustomerHero> getAllCustomers();
-	
+public interface CustomerRespository {
+    
+    List<Customer> getAllCustomers();
+    void addCustomer(Customer customer);
 }

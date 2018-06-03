@@ -34,7 +34,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.servlet.view.xml.MarshallingView;
 import org.springframework.web.util.UrlPathHelper;
 
-
 import com.packt.webstore.domain.Product;
 import com.packt.webstore.interceptor.ProcessingTimeLogInterceptor;
 import com.packt.webstore.interceptor.PromoCodeInterceptor;
@@ -81,15 +80,15 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
        registry.addResourceHandler("/img/**")
               .addResourceLocations("/resources/images/");
     }
-    
+    // max upload size
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver=new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");
+        resolver.setMaxUploadSize(10240000);
         return resolver;
     }
     
-    // JSON view
     @Bean
     public MappingJackson2JsonView jsonView() {
        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
@@ -98,7 +97,6 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
        return jsonView; 
     }
     
-    // XML view
     @Bean
     public MarshallingView xmlView() {
        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
@@ -108,20 +106,20 @@ public class WebApplicationContextConfig extends WebMvcConfigurerAdapter {
        return xmlView;
     }
     
-    // Configure the ContentNegotiationView Resolvver
-	@Bean
-	public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
-		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
-		resolver.setContentNegotiationManager(manager);
-
-		ArrayList<View> views = new ArrayList<>();
-		views.add(jsonView());
-		views.add(xmlView());
-
-		resolver.setDefaultViews(views);
-
-		return resolver;
-	}
+    @Bean
+    public ViewResolver contentNegotiatingViewResolver(
+             ContentNegotiationManager manager) {
+       ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+       resolver.setContentNegotiationManager(manager);
+          
+       ArrayList<View>   views = new ArrayList<>();
+       views.add(jsonView());
+       views.add(xmlView());
+          
+       resolver.setDefaultViews(views);
+             
+       return resolver;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {      

@@ -1,59 +1,42 @@
 package com.packt.webstore.controller;
 
+
+import com.packt.webstore.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.packt.webstore.domain.Customer;
 import com.packt.webstore.service.CustomerService;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class CustomerController {
-
+	
 	@Autowired
 	private CustomerService customerService;
 
+
+
 	@RequestMapping("/customers")
-	public String customerList(Model model) {
-
-		model.addAttribute("customers", customerService.getAllCustomers());
-
-		return "customers";
+	public String list(Model model) {
+	   model.addAttribute("customers", customerService.getAllCustomers());
+	   return "customers";
 	}
-
-	// create request mapping for customers/add
-	@RequestMapping(value = "/customers/add", method = RequestMethod.GET)
+        
+        @RequestMapping(value = "/customers/add", method = RequestMethod.GET)
 	public String getAddNewCustomerForm(Model model) {
-
-		Customer newCustomer = new Customer();
-		model.addAttribute("newCustomer", newCustomer);
-
-		return "addCustomer";
+	   Customer newCustomer = new Customer();
+	   model.addAttribute("newCustomer", newCustomer);
+	   return "addCustomer";
 	}
-
+	   
 	@RequestMapping(value = "/customers/add", method = RequestMethod.POST)
 	public String processAddNewCustomerForm(@ModelAttribute("newCustomer") Customer newCustomer, BindingResult result) {
-		String[] suppressedFields = result.getSuppressedFields();
-
-		if (suppressedFields.length > 0) {
-			throw new RuntimeException("Attempting to bind disallowed fields: "
-					+ StringUtils.arrayToCommaDelimitedString(suppressedFields));
-		}
-
-		customerService.addCustomer(newCustomer);
-
-		return "redirect:/customers";
+		
+	   customerService.addCustomer(newCustomer);
+	   return "redirect:/customers";
 	}
 
-	@InitBinder
-	public void initialiseBinder(WebDataBinder binder) {
-		binder.setAllowedFields("customerId", "name", "address");
-	}
 }
